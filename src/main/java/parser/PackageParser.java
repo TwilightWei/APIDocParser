@@ -1,3 +1,4 @@
+package main.java.parser;
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -6,6 +7,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import main.java.file.APIFileIO;
+import main.java.html.HtmlToString;
 
 public class PackageParser {
 	public HashMap<String, String> parse(){

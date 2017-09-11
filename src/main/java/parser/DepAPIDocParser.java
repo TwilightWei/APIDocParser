@@ -1,3 +1,4 @@
+package main.java.parser;
 import java.io.IOException;
 
 import org.jsoup.nodes.Document;
@@ -5,6 +6,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import main.java.file.APIFileIO;
+import main.java.html.HtmlToString;
 
 // TOFIX: better naming mechanism
 public class DepAPIDocParser {
@@ -34,7 +36,6 @@ public class DepAPIDocParser {
 				} catch(NullPointerException e){
 					System.out.println(e);
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}

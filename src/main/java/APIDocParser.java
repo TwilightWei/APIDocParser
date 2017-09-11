@@ -1,5 +1,12 @@
+package main.java;
 import java.util.HashMap;
 import java.util.Map.Entry;
+
+import main.java.parser.ClassParser;
+import main.java.parser.DepAPIDocParser;
+import main.java.parser.FieldParser;
+import main.java.parser.MethodParser;
+import main.java.parser.PackageParser;
 
 public class APIDocParser {
 	public static void main(String[] args){		
@@ -14,6 +21,7 @@ public class APIDocParser {
 		System.out.println("Start parsing deprecated APIs");
 		depAPIDocParser.parse();
 		System.out.println("Finish parsing deprecated APIs");
+		
 		System.out.println("Start parsing package APIs");
 		packageUrls = packageParser.parse();
 		System.out.println("Finish parsing package APIs");

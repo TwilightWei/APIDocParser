@@ -1,3 +1,4 @@
+package main.java.parser;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -5,7 +6,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 public class ConfigFileParser {
-	private static String config = "D:\\Users\\user\\workspace\\APIDocParser\\src\\config.properties";
+	private static String config = "D:\\Users\\user\\git\\APIDocParser\\src\\config.properties";
 	
 	protected String getConfig(String key){
 		File configFile = new File(config);

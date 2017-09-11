@@ -1,3 +1,4 @@
+package main.java.html;
 import java.io.IOException;
 
 import org.jsoup.Jsoup;
@@ -10,7 +11,6 @@ public class HtmlToString {
 		try {
 			doc = Jsoup.connect(url).get();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			System.out.println(e);
 		}
 		return doc;
