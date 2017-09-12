@@ -6,6 +6,7 @@ import org.jsoup.nodes.Document;
 
 
 public class HtmlToString {
+	
 	public Document toString(String url){
 		Document doc = null;
 		try {
