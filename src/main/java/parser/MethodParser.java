@@ -14,6 +14,7 @@ public class MethodParser {
 	public HashMap<String, String> parse(String source, Entry<String, String> classUrl) {		
 		Document doc = null;
 		File input = new File(classUrl.getValue());
+		
 		try {
 			doc = Jsoup.parse(input, "UTF-8");
 		} catch (IOException e) {
