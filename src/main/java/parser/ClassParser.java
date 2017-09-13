@@ -1,24 +1,26 @@
 package main.java.parser;
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import main.java.file.APIFileIO;
-import main.java.html.HtmlToString;
-
-public class ClassParser {
-	public HashMap<String, String> parse(Entry<String, String> packageUrl){
-		HashMap<String, String> classUrls = new HashMap<String, String>();
-		ConfigFileParser configFileParser = new ConfigFileParser();
-		APIFileIO file = new APIFileIO();
-		HtmlToString htmlToString = new HtmlToString();
+public class ClassParser {	
+	public HashMap<String, String> parse(String source, Entry<String, String> packageUrl){
+		Document doc = null;
+		File input = new File(packageUrl.getValue());
 		
-		String filePath = configFileParser.getConfig("Source")+"\\APIDoc\\Classes.txt";
-		Document doc = htmlToString.toString(packageUrl.getValue());
+		try {
+			doc = Jsoup.parse(input, "UTF-8");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		HashMap<String, String> classUrls = new HashMap<String, String>();
 		Element  body = doc.body();
 		Elements blocklists = body.select("ul.blocklist");
 		for(Element blocklist:blocklists){
@@ -26,16 +28,12 @@ public class ClassParser {
 			for(Element colFirst:colFirsts){
 				Elements hrefs = colFirst.select("a");
 				for(Element href:hrefs){
-					try{
-						// Save into files
-						String className = packageUrl.getKey()+"."+href.ownText();
-						file.appendFile(filePath, className);
-						classUrls.put(className, href.absUrl("href"));
-					} catch(NullPointerException e){
-						System.out.println(e);
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+					String className = packageUrl.getKey()+"."+href.ownText();
+					String classPath = href.attr("href").replace("/", "\\");
+					if(!classPath.contains("https:") && !classPath.contains("http:")) { // Filter out unwanted links
+						classUrls.put(className, source + "\\" + classPath);
+					} else {
+						System.out.println(source + "\\" + classPath);
 					}
 				}
 			}
