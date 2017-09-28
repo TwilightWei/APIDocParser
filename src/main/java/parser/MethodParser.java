@@ -24,16 +24,22 @@ public class MethodParser {
 		HashMap<String, String> methodUrls = new HashMap<String, String>();
 		Element  body = doc.body();
 		Elements blocklists = body.select("li.blocklist");
+		//System.out.println("---Class---");
 		for(Element blocklist:blocklists){
+			blocklist.select("ul.blocklist").remove();
 			if(blocklist.select("table.memberSummary").size()>0 && blocklist.select("li.blocklist").size()==1){
 				String apiType = new String();
 				for(Element h3:blocklist.select("h3")){
 					if(h3.ownText().equals("Method Summary")){
 						apiType = "method";
+						//System.out.println(apiType);
+						//System.out.println(blocklist.select("li.blocklist").size());
 						break;
 					}
 					else if(h3.ownText().equals("Constructor Summary")){
 						apiType = "constructor";
+						//System.out.println(apiType);
+						//System.out.println(blocklist.select("li.blocklist").size());
 						break;
 					}
 				}
@@ -45,15 +51,17 @@ public class MethodParser {
 						methodName = classUrl.getKey()+"."+methodName;
 						methodUrls.put(methodName, source);
 					}
+					apiType = null;
 				}
 				else if(apiType == "constructor"){
-					Elements colLasts = blocklist.select("td.colOne");
-					for(Element colLast:colLasts){
-						colLast.select("div.block").remove();
-						String methodName = colLast.text().replace("\u00a0", " ");
+					Elements colOnes = blocklist.select("td.colOne");
+					for(Element colOne:colOnes){
+						colOne.select("div.block").remove();
+						String methodName = colOne.text().replace("\u00a0", " ");
 						methodName = classUrl.getKey()+"."+methodName;
 						methodUrls.put(methodName, source);
 					}
+					apiType = null;
 				}
 			}
 		}
