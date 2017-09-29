@@ -1,6 +1,8 @@
 package main.java.parser;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
@@ -11,7 +13,7 @@ import org.jsoup.select.Elements;
 
 public class MethodParser {
 
-	public HashMap<String, String> parse(String source, Entry<String, String> classUrl) {		
+	public HashMap<String, String> parse(String source, Entry<String, String> classUrl) {
 		Document doc = null;
 		File input = new File(classUrl.getValue());
 		
@@ -48,6 +50,9 @@ public class MethodParser {
 					for(Element colLast:colLasts){
 						colLast.select("div.block").remove();
 						String methodName = colLast.text().replace("\u00a0", " ");
+						if(!methodName.contains("()")) {
+							methodName = removeParaName(methodName);
+						}
 						methodName = classUrl.getKey()+"."+methodName;
 						methodUrls.put(methodName, source);
 					}
@@ -58,6 +63,9 @@ public class MethodParser {
 					for(Element colOne:colOnes){
 						colOne.select("div.block").remove();
 						String methodName = colOne.text().replace("\u00a0", " ");
+						if(!methodName.contains("()")) {
+							methodName = removeParaName(methodName);
+						}
 						methodName = classUrl.getKey()+"."+methodName;
 						methodUrls.put(methodName, source);
 					}
@@ -66,5 +74,17 @@ public class MethodParser {
 			}
 		}
 		return methodUrls;
+	}
+	
+	public String removeParaName(String methodName) {
+		String newMethodName = null;
+		//System.out.println(methodName);
+		String[] parameters = methodName.substring(methodName.indexOf("(")+1, methodName.indexOf(")")).split(", ");
+		for (int i=0; i<parameters.length; i++) {
+			parameters[i] = parameters[i].substring(0, parameters[i].lastIndexOf(" "));
+		}
+		newMethodName = methodName.substring(0, methodName.indexOf("(")) + "(" + String.join(", ", parameters) + ")";
+		//System.out.println(newMethodName+"\n");
+		return newMethodName;
 	}
 }
