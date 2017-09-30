@@ -52,6 +52,8 @@ public class MethodParser {
 						String methodName = colLast.text().replace("\u00a0", " ");
 						if(!methodName.contains("()")) {
 							methodName = removeParaName(methodName);
+						} else {
+							methodName = methodName.substring(0, methodName.indexOf("("))+"()";
 						}
 						methodName = classUrl.getKey()+"."+methodName;
 						methodUrls.put(methodName, source);
@@ -65,6 +67,8 @@ public class MethodParser {
 						String methodName = colOne.text().replace("\u00a0", " ");
 						if(!methodName.contains("()")) {
 							methodName = removeParaName(methodName);
+						} else {
+							methodName = methodName.substring(0, methodName.indexOf("("))+"()";
 						}
 						methodName = classUrl.getKey()+"."+methodName;
 						methodUrls.put(methodName, source);

@@ -25,11 +25,15 @@ public class FieldParser {
 		Element  body = doc.body();
 		Elements blocklists = body.select("li.blocklist");
 		for(Element blocklist:blocklists){
+			blocklist.select("ul.blocklist").remove();
 			if(blocklist.select("table.memberSummary").size()>0 && blocklist.select("li.blocklist").size()==1){
 				String apiType = new String();
 				for(Element h3:blocklist.select("h3")){
 					if(h3.ownText().equals("Field Summary")){
 						apiType = "field";
+						break;
+					} else if(h3.ownText().equals("Enum Constant Summary")) {
+						apiType = "enum";
 						break;
 					}
 				}
@@ -37,7 +41,17 @@ public class FieldParser {
 					Elements colLasts = blocklist.select("td.colLast");
 					for(Element colLast:colLasts){
 						colLast.select("div.block").remove();
-						String fieldName = colLast.text().replace("\u00a0", " ");
+						String fieldName = colLast.text().replace("\u00a0", "");
+						//fieldName = fieldName.replace(" ", "");
+						fieldName = classUrl.getKey()+"."+fieldName;
+						fieldUrls.put(fieldName, source);
+					}
+				} else if(apiType == "enum") {
+					Elements colLasts = blocklist.select("td.colOne");
+					for(Element colLast:colLasts){
+						colLast.select("div.block").remove();
+						String fieldName = colLast.text().replace("\u00a0", "");
+						//fieldName = fieldName.replace(" ", "");
 						fieldName = classUrl.getKey()+"."+fieldName;
 						fieldUrls.put(fieldName, source);
 					}
